@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style type="text/css">
+        ol,
+        ul {
+            list-style: none
+        }
+
+        .divframe {
+            width: 1000px;
+            height: 400px;
+            margin: auto;
+            position: relative;
+        }
+        .scroll {
+            margin: 0 auto;
+            width: 938px;
+            float: left;
+        }
+        .scroll_list ul {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .scroll_list {
+            width: 10000em;
+            position: absolute;
+        }
+
+        .box {
+            height: 400px;
+            float: left;
+            width: 1000px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .box li {
+            display: block;
+            float: left;
+            width: 1000px;
+            height: 400px;
+        }
+
+        .box li a img {
+            max-width: 1000px;
+            max-height: 400px;
+        }
+
+        .box li:hover {
+            color: #999;
+        }
+
+        a.prev,
+        a.next {
+            display: block;
+            width: 42px;
+            height: 67px;
+            float: left;
+            cursor:grabbing;
+            z-index: 50;
+        }
+
+        a.prev {
+            background: url(../img/input_bg1.png) 0 0;
+            position: absolute;
+            left: 10px;
+            top: 170px;
+        }
+
+        a.next {
+            background-image: url(../img/input_bg2.png);
+            position: absolute;
+            left: 950px;
+            top: 170px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="divFrame">
+        <div class="scroll">
+            <a class="prev"></a>
+            <div class="box">
+                <div class="scroll_list">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <img class="img1" src="../img/family.jpg" width="1000px" height="400px" />
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img class="img1" src="../img/person.jpg" width="1000px" height="400px" />
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img class="img1" src="../img/Trump.jpg" width="1000px" height="400px" />
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <a class="next"></a>
+        </div>
+    </div>
+</body>
+<script src=" https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+<script>
+    $(function () {
+        setInterval("$(\".next\").click()", 3000);
+        var page = 1;
+        $(".next").click(function () {
+            var v_warp = $(this).parents(".scroll");
+            var v_show = v_warp.find(".scroll_list");
+            var v_cont = v_warp.find(".box");
+            var v_width = v_cont.width();
+            var len = v_show.find("li").length;
+            var page_count = Math.ceil(len);
+
+            if (!v_show.is(":animated")) {
+                if (page == page_count) {
+                    v_show.animate({ left: '0px' }, 'slow');
+                    page = 1;
+                }
+                else {
+                    v_show.animate({ left: '-=' + v_width }, 'slow');
+                    page++;
+                }
+            }
+        });
+        $('.prev').click(function () {
+            var v_warp = $(this).parents('.scroll');
+            var v_show = v_warp.find('.scroll_list');
+            var v_cont = v_warp.find('.box');
+            var v_width = v_cont.width();
+            var len = v_show.find('li').length;
+            var page_count = Math.ceil(len);
+            if (!v_show.is(":animated")) {
+                if (page == 1) {
+                    v_show.animate({ left: '-=' + v_width * (page_count - 1) }, "slow");
+                    page = page_count;
+                }
+                else {
+                    v_show.animate({ left: '+=' + v_width }, "slow");
+                    page--;
+                }
+            }
+        })
+    })
+</script>
+
+</html>

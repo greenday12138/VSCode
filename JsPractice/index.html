@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<head></head>
+
+<body>
+    <button class='refresh'>刷新</button>
+    <div id="content">
+
+    </div>
+</body>
+<script>
+    var btn = document.getElementsByClassName('refresh');
+    for (var i = 0; i < btn.length; ++i) {
+        btn[i].onclick = function () {
+            request();
+            // addButton();
+        };
+    }
+
+    // function addButton() {
+    //     var node = document.createElement('button');
+    //     node.setAttribute('id', 'refresh');
+    //     node.onclick = addButton;
+    //     document.getElementById('content')
+    //     document.getElementById('content').appendChild(node);
+    // }
+
+    var result = [];
+
+    function request() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            xmlhttp = new ActiveXObject();
+        }
+
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+
+                var re = JSON.parse(xmlhttp.responseText);
+                if (re.msg === undefined) {
+                    if (sessionStorage.length === 0) {
+                        sessionStorage.setItem(re.tree.N,JSON.stringify(re));
+                    } else {
+                        if (sessionStorage.getItem(re.tree.N)===null) {
+                            console.log(re);
+                            sessionStorage.setItem(re.tree.N,JSON.stringify(re));
+                        }
+                    }
+
+                }
+
+                // for (var i = 0; i < result.length; ++i) {
+                //     console.log(result[i]);
+                // }
+
+                // var node = document.createElement('p');
+                // node.innerText = xmlhttp.responseText;
+                // node.setAttribute('id', 'info');
+                // if (document.getElementById('content').childElementCount > 0)
+                //     document.getElementById('content').removeChild(document.getElementById('info'));
+                // document.getElementById('content').appendChild(node);
+            }
+        }
+
+
+        xmlhttp.open('get', 'http://ext.gaomuxuexi.com:5870/task/random', true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send();
+
+    }
+</script>

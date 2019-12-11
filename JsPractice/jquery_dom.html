@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<head>
+
+</head>
+
+<body>
+    <div class="divframe">
+        <ul>
+            <li title="1">first news</li>
+            <li title="2">second news</li>
+            <li title="3">third news</li>
+            <li title="4">forth news</li>
+            <li title="img">
+                <img title="a image" src="../img/icons.png" alt="" />
+            </li>
+        </ul>
+        <select multiple="multiple">
+            <option value="1">Item 1</option>
+            <option value="2">Item 2</option>
+            <option value="3">Item 3</option>
+            <option value="4">Item 4</option>
+        </select>
+        <p id="p1"></p>
+        <table class="MainTable">
+            <thead>
+                <tr>
+                    <th class="sort_asc list_sort" id="sortID">序号</th>
+                    <th>内容</th>
+                </tr>
+            </thead>
+            <tbody id="pageContent">
+                <tr>
+                    <td class="list_sort">1</td>
+                    <td>互联网网站访问量排行第1名：百度</td>
+                </tr>
+                <tr>
+                    <td class="list_sort">2</td>
+                    <td>互联网网站访问量排行第2名：新浪</td>
+                </tr>
+                <tr>
+                    <td class="list_sort">3</td>
+                    <td>互联网网站访问量排行第3名：网易</td>
+                </tr>
+                <tr>
+                    <td class="list_sort">4</td>
+                    <td>互联网网站访问量排行第4名：腾讯</td>
+                </tr>
+                <tr>
+                    <td class="list_sort">5</td>
+                    <td>互联网网站访问量排行第5名：搜狐</td>
+                </tr>
+                <tr>
+                    <td class="list_sort">6</td>
+                    <td>互联网网站访问量排行第6名：淘宝</td>
+                </tr>
+                <tr>
+                    <td class="list_sort">7</td>
+                    <td>互联网网站访问量排行第7名：搜狗</td>
+                </tr>
+                <tr>
+                    <td class="list_sort">8</td>
+                    <td>互联网网站访问量排行第8名：360安全中心</td>
+                </tr>
+                <tr>
+                    <td class="list_sort">9</td>
+                    <td>互联网网站访问量排行第9名：京东商城</td>
+                </tr>
+                <tr>
+                    <td class="list_sort">10</td>
+                    <td>互联网网站访问量排行第10名：优酷网</td>
+                </tr>
+                <tr>
+                    <td class="list_sort">11</td>
+                    <td>
+                        <input type="checkbox" name="my-checkbox">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="btn">
+        <button id="append">append</button>
+        <button id="after">after</button>
+        <button id="remove">remove</button>
+        <button id="clone">clone</button>
+        <button id="replace">replace</button>
+        <button id="warp">warp</button>
+        <button id="each">each</button>
+    </div>
+    <input type="button" value="acquire element attribute" id="attr" />
+</body>
+
+<script src=" https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+<script>
+    $(function () {
+        $("#sortID").click(function () {
+            var NewContent;
+            if ($(this).hasClass("sort_asc")) {
+                for (var i = 9; i >= 0; --i) {
+                    NewContent += "<tr>" + $("#pageContent tr").eq(i).html() + "</tr>";
+                }
+                $("#pageContent").html(NewContent);
+                $(this).removeClass("sort_asc");
+                $(this).addClass("sort_desc");
+            }
+            else {
+                for (var i = 0; i <= 9; ++i) {
+                    NewContent += "<tr>" + $("#pageContent tr").eq(i).html() + "</tr>";
+                }
+                $("pageContent").html(NewContent);
+                $(this).removeClass("sort_desc");
+                $(this).addClass("sort_asc");
+            }
+        })
+        $("select").change(function () {
+            var varSelect = $("select").val().join(",");
+            $("#p1").html(varSelect);
+        })
+        $("input").change(function () {
+            var strText = $("input").val();
+            $("#p1").html(strText);
+        })
+        $("input").focus(function () {
+            $("input").val("");
+        })
+        $("#attr").click(function () {
+            var con = $("img");
+            alert("title=" + con.attr("title") + ", src=" + con.attr("src"));
+            con.attr({ title: "new image", src: "../img/Trump.jpg" });
+            con.removeAttr("title");
+        })
+        $("#append").click(function () {
+            var str = "<tr>" +
+                "<td>" + "1000" + "</td>" +
+                "<td>" + `<input type="checkbox" name="my-checkbox">` + "</td>" +
+                "</tr>"
+            $("#pageContent").append(str);
+        });
+        $("#after").click(function () {
+            $(".divframe").insertAfter("#append");
+        })
+        $("#remove").click(function () {
+            $("li").remove("li[title=1]");
+            // $("li").empty();
+        });
+        $("#clone").click(function () {
+            $(this).clone(true).appendTo("body");
+        })
+        $("#replace").click(function () {
+            $(".divframe").replaceWith("<span>hhh</span>");
+            $(".divframe").replaceAll(this);
+        })
+        $("#warp").click(function () {
+            $(".divframe").wrap("<p></p>");
+            $("span").wrapInner("<i></i>");
+        })
+        $("#each").click(function () {
+            $("li").each(function (i) {
+                var content = $(this).text();
+                $(this).html(i + 1 + '.' + content);
+            })
+        });
+        $('#pageContent').on('each click','input',function(){
+            console.log($(this).parent().parent().html());
+        })
+    });
+    function reHtml() {
+        var str = "<h1>return string</h1>";
+        return str;
+    }
+</script>

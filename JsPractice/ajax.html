@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<head>
+
+</head>
+
+<body>
+    <div class="center">
+        <div><input type="button" onclick="loadXMLDox('showNewsList')" value="AJAX output news" /></div>
+        <div class="listTitle">
+            <span class="title">Title</span>
+            <span class="pubtime">Publish Time</span>
+        </div>
+        <div id="showNewsList" class="listContent">Click to output news list</div>
+        <a href="jquery_dom.html">
+            <button>temp</button>
+        </a>
+    </div>
+    <!-- <div class="center">
+        <div>
+            <input type="button" onclick="loadXMLDoc('showGrade')" value="AJAX output grade brochure"/>
+        </div>
+        <div class="gradeTitle">
+            <div class="studentID">ID</div>
+            <span class="studentName">Name</span>
+            <span class="studentSex">Gender</span>
+            <span class="studentMajor">Major</span>
+            <span class="studentLesson">Web</span>
+            <span class="studentLesson">OS</span>
+            <span class="studentLesson">Internet</span>
+            <span class="studentLesson">Database</span>
+        </div>
+    </div> -->
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+<script>
+    function loadXMLDoc(grade) {
+        var xmlHttp;
+        if (window.XMLHttpRequest) {
+            xmlHttp = new XMLHttpRequest();
+        }
+        else {
+            xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState == 4 && xmlHttp.readyState == 200) {
+                var jsonObj = JSON.parse(xmlHttp.response);
+                var channelObj = jsonObj['channel'];
+            }
+        }
+    }
+    function saveSimpleString() {
+        sessionStorage.setItem("course", "Web");
+    }
+    function saveStructuredData() {
+        var studentInfo = [
+            { "courseNum": "0", "name": "id" },
+            { "courseNum": "1", "name": "name" }
+        ]
+        sessionStorage.setItem("studentInfo", JSON.stringify(studentInfo));
+    }
+    function readSession() {
+        console.log(sessionStorage.length);
+        console.log(sessionStorage.key(0));
+        console.log(sessionStorage.key(1));
+        console.log(sessionStorage.getItem("course"));
+        console.log(sessionStorage.getItem("studentInfo"));
+    }
+    function removeSession() {
+        sessionStorage.removeItem("course");
+        console.log(sessionStorage.length);
+        console.log(sessionStorage.key(0));
+    }
+    function changeHTML() {
+        $("#showNewsList").text("temp");
+    }
+</script>

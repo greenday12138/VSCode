@@ -1,0 +1,25 @@
+{
+  "name": "node.js",
+  "version": "1.0.0",
+  "main": "node_test.js",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "csv": "^5.3.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "mysql": "^2.17.1",
+    "pg": "^7.14.0",
+    "request": "^2.88.0",
+    "util": "^0.12.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

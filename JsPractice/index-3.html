@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta keywords=" HTML5 CSS transform">
+<meta content=" 制作时钟">
+<title>制作时钟</title>
+
+</head>
+<body>
+<div class="clock">
+	<div class="body-top">
+		<div class="dial">
+			<ul class="number">
+				<li>3</li>
+				<li>6</li>
+				<li>9</li>
+				<li>12</li>
+			</ul>
+			<div class="second-hand"></div>
+			<div class="minute-hand"></div>
+			<div class="hour-hand"></div>
+		</div>
+	</div>
+	<div class="body-bottom">
+		<div class="pendulum">
+			<div class="pendulum-stick"></div>
+			<div class="pendulum-body"></div>
+		</div>
+	</div>
+</div>
+</body>
+
+<style type="text/css">
+	<!--时钟整体样式-->
+	.clock {
+		height: 1em;
+		width: 1em;
+		margin: 0 auto;
+	}
+	<!--时钟上半部样式-->
+	.clock .body-top {
+		height: 0.5em;
+		margin: 0;
+		padding: 0;
+		border-radius: 400px 400px 0 0;
+		background-color: #6FB247;
+	}
+	.body-top .dial {
+		height: 0.325em;
+		width: 0.68em;
+		margin: 0 auto;
+		position: relative;
+		transform: translateY(30px);
+		border-radius: 200px;
+		background-color: #EFEFEF;
+	}
+	.dial .second-hand {
+		height: 74px;
+		width: 2px;
+		border-radius: 20px;
+		position: absolute;
+		left: 4px;
+		z-index: 2;
+		transform-origin: 50% 5px;
+		animation: timehand 60s steps(60, end) infinite;
+		background-color: #900;
+	}
+	.dial .minute-hand {
+		height: 70px;
+		width: 4px;
+		border-radius: 20px;
+		position: absolute;
+		left: 3px;
+		z-index: 3;
+		transform-origin: 50% 5px;
+		animation: timehand 3600s steps(3600, end) infinite;
+		background-color: #313131;
+	}
+	.dial .hour-hand {
+		height: 50px;
+		width: 6px;
+		border-radius: 20px;
+		position: absolute;
+		left:2px;
+		z-index: 4;
+		transform-origin: 50% 5px;
+		animation: timehand 43200s steps(43200, end) infinite;
+		background-color: #313131;
+	}
+	.dial ul {
+		position: absolute;
+		list-style: none;
+	}
+	.dial ul li {
+		width: 15px;
+		height: 15px;
+		top: 50%;
+		left: 50%;
+		text-align: center;
+		line-height: 15px;
+	}
+	.dial ul li:nth-child(1) {
+		-webkit-transform: translate(-37px,59px);
+		-moz-transform: ttranslate(-37px,59px);
+		transform: translate(-37px,59px);
+	}
+	.dial ul li:nth-child(2) {
+		-webkit-transform: translate(28px, 102px);
+		-moz-transform: translate(28px, 102px);
+		transform: translate(28px, 93px);
+	}
+	.dial ul li:nth-child(3) {
+		-webkit-transform: translate(93px, 25px);
+		-moz-transform: translate(93px, 25px);
+		transform: translate(93px, 25px);
+	}
+	.dial ul li:nth-child(4) {
+		-webkit-transform: translate(26px, -58px);
+		-moz-transform: translate(26px, -58px);
+		transform: translate(26px, -58px);
+	}
+	<!--时钟下半部样式-->
+	.clock .body-bottom {
+		position: relative;
+		z-index: -1;
+		height: 190px;
+		margin: 0;
+		padding: 0;
+		border-radius: 0 0 20px 20px;
+		background-color: #368633;
+	}
+	@keyframes timehand {							/*定义动画名称*/
+	 0% {
+	 transform: translate(70px, 75px) rotate(180deg);/*元素位移、旋转角度*/
+	}
+	 100% {
+	 transform: translate(70px, 75px) rotate(539deg);
+	}
+	}
+	@keyframes ticktock {
+	 0% {
+	 transform: rotate(15deg);
+	}
+	 100% {
+	 transform: rotate(-25deg);
+	}
+	}
+	.body-bottom .pendulum {
+		height: 140px;
+		animation-duration: 1s;						/*动画周期*/
+		animation-name: ticktock;					/*动画名称*/
+		animation-iteration-count: infinite;		/*动画次数*/
+		animation-timing-function: ease-in-out;		/*动画速度*/
+		animation-direction: alternate;				/*动画方向*/
+		animation-fill-mode: both;					/*动画对象为开始或结束时的状态*/
+		animation-play-state: running;				/*动画运行状态*/
+		transform-origin: 50% -70%;					/*动画转换位置*/
+	}
+	<!--钟摆上半部CSS样式-->
+	.pendulum .pendulum-stick {
+		height: 70%;								/*高度为父元素的70%*/
+		width: 12px;								/*钟摆宽度为12px*/
+		margin: 0 auto;								/*居中*/
+		background-color: #C1C1C1;
+	}
+	<!--钟摆下半部CSS样式-->
+	.pendulum .pendulum-body {
+		height: 40px;
+		width: 40px;
+		border-radius: 40px;						/*边框半径为40px*/
+		margin: 0 auto;
+		margin-top: -2px;
+		background-color: #313131;
+	}
+	.number{
+		text-shadow:#313131;
+	}
+	</style>
+</html>

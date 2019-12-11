@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta keywords="javascript">
+    <meta content="使用js实现限时答题效果">
+    <title>
+        使用js实现限时答题效果
+    </title>
+</head>
+
+<body>
+    <div id="bodyContent" class="body_content">
+        <form method="post">
+            <table class="Maintainable" id="QuestionBox">
+                <tbody>
+                    <tr>
+                        <td style="font-weight: bold;">
+                            第一题：
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>下列哪种语言在应用中不区分大小写</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>
+                                <input type="radio" />A. HTML
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>
+                                <input type="radio" />B. CSS
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>
+                                <input type="radio" />C. JS
+                            </label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="TimingInfo">
+                <div>
+                    <span>倒计时<span id="save_info">5</span>秒</span>
+                </div>
+                <div class="nextdiv">
+                    <input type="button" name="form_save" onclick="next()" value="下一题" />
+                </div>
+            </div>
+        </form>
+        <table id="question_1" style="display: none;">
+            <tbody>
+                <tr>
+                    <td style="font-weight: bold;">第二题：</td>
+                </tr>
+                <tr>
+                    <td>Who anserw faffa?</td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <input type="radio"/>A.fadfafa 
+                        </label> </td>
+                </tr>
+                <tr>
+                    <td><label>
+                        <input type="radio"/>B.adfafasf
+                    </label></td>
+                </tr>
+                <tr>
+                    <td><label>
+                        <input type="radio"/>C.fafafaf
+                    </label></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script type="text/javascript">
+    var num=1;
+    var i=5;
+    var intervalId;
+    intervalId=setInterval("Timing()",1000);
+    function Timing(){
+        document.getElementById("save_info").innerHTML=i;
+        if(i==0){
+            next();
+            clearInterval(intervalId);
+        }
+        else{
+            i--;
+        }
+    }
+    function next(){
+        var main=document.getElementById("QuestionBox");
+        if(num==0){
+            document.getElementById("TimingInfo").style.display="none";
+            main.innerHTML="Question Finished";
+            return ;
+        }
+        else{
+            var temp=document.getElementById("question_"+num).innerHTML;
+            main.innerHTML=temp;
+            i=5;
+            document.getElementById("save_info").innerHTML=i;
+            intervalId=setInterval("Timing()",1000);    
+        }
+        num--;
+    }
+</script>
+</html>

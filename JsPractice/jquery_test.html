@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JQuery
+    </title>
+</head>
+
+<body>
+    <div class="divtitle">
+        <input type="button" value="fadeIn" id="button1"/>
+        <input type="button" value="fadeOut" id="button2"/>
+    </div>
+    <div class="divcontent">
+        <div class="divtip"></div>
+        <img src="../clock.png" alt=""/>
+    </div>
+</body>
+
+<script src=" https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+<script>
+    $(function(){
+        var tip=$(".divtip");
+        $("#button1").click(function(){
+            $("img").fadeIn(3000,function(){
+                tip.html("fade in success");
+            })
+        });
+        $("#button2").click(function(){
+            $("img").animate({
+                width:"50vmin",
+                height:"50vmin"
+            }),3000,function(){
+                $("#button2").css({"border":"inset 1vmin #999"}).value("turn larger");
+            }
+        })
+    })
+</script>
+
+</html>

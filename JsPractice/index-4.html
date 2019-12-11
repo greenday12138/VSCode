@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<head>
+    <style>
+        .pad {
+            width:40vmin;
+            height: 63vmin;
+            /* width: 390px;
+            height: 610px; */
+            position: absolute;
+            display: block;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #EEEEEE;
+            border-style: outset;
+            border-radius: 1vmin;
+            box-shadow: 2px 2px 10px #777777,
+                1px 2px 10px white inset;
+            /* box-shadow: 2px 10px 10px 1px #777777; */
+        }
+
+        .caculator {
+            width:35vmin;
+            height:60vmin;
+            /* width: 350px;
+            height: 570px; */
+            position: absolute;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .output {
+            background-color: #555555;
+            width:35vmin;
+            height:10vmin;
+            /* width: 345px;
+            height: 95px; */
+            display: block;
+            border-radius: 0.5vmin;
+            border-style: inset;
+            box-shadow: 0.01vmin 0.01vmin 0.1vmin 0.1vmin #323232 inset;
+            overflow: hidden;
+        }
+
+        .result {
+            color: #00ff00;
+            text-align:left;
+            width:30vmin;
+            height:10vmin;
+            /* width:295px;
+            height:95px; */
+            padding:1.5vmin 1vmin 1.5vmin 2vmin;
+            font-size: 6vmin;
+            overflow: hidden;
+        }
+
+        .input {
+            margin: 2vmin -2vmin 2vmin 0;
+        }
+
+        .row {
+            margin: 0.5vmin 0 0.5vmin 0;
+        }
+
+        .btn {
+            border-style: linear-gradient(to bottom, white, black) outset;
+            border-radius: 100%;
+            height: 6vmin;
+            width: 6vmin;
+            box-shadow: 0 0 0.1vmin 0.1vmin gray;
+            margin: 1vmin 1.5vmin 1vmin 0.5vmin;
+        }
+
+        .btn-total {
+            border-radius: 3vmin;
+            height: 6vmin;
+            width: 15vmin;
+            box-shadow: 0 0 0.1vmin 0.1vmin gray;
+            margin: 0 -10vmin 0 1vmin;
+        }
+
+        .btn:hover,
+        .btn-total:hover {
+            cursor: pointer;
+        }
+
+        .char {
+            color: white;
+            background-color: inherit;
+            font-size: 3vmin;
+            text-shadow: 0.1vmin 0.1vmin black;
+
+        }
+
+        .digit {
+            color: #555555;
+            background-color: inherit;
+            font-size: 3vmin;
+            text-shadow: 0.1vmin 0.1vmin black;
+        }
+
+        .digit:hover {
+            color: #00ff00;
+        }
+
+        .digit:active {
+            color: red;
+        }
+
+        .disabled {
+            display: none;
+        }
+
+        .bg-gray {
+            background: linear-gradient(to bottom, #7f7f7f, #a0a0a0);
+        }
+
+        .bg-light {
+            background: linear-gradient(to bottom, #cfcfcf, #efefef);
+        }
+
+        .bg-yellow {
+            background: linear-gradient(to bottom, #e97d03, #fc9016);
+        }
+
+        .bg-red {
+            background: linear-gradient(to bottom, #e80303, #fd1717);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="pad">
+        <div class="caculator">
+            <div class="output">
+                <div id="screen" class="result"></div>
+            </div>
+            <div class="input">
+                <table>
+                    <tbody>
+                        <tr class="row">
+                            <td><button id="clear" class="btn bg-red" value="c">
+                                    <div class="char">C</div>
+                                </button></td>
+                            <td><button class="btn disabled">
+                                    <div class="char">C</div>
+                                </button></td>
+                            <td><button class="btn disabled">
+                                    <div class="char">C</div>
+                                </button></td>
+                            <td><button id="caculate" class="btn bg-yellow" value="=">
+                                    <div class="char">=</div>
+                                </button></td>
+                        </tr>
+                        <tr class="row">
+                            <td> <button class="btn bg-light" value="7">
+                                    <div class="digit">7</div>
+                                </button></td>
+                            <td><button class="btn bg-light" value="8">
+                                    <div class="digit">8</div>
+                                </button></td>
+                            <td><button class="btn bg-light" value="9">
+                                    <div class="digit">9</div>
+                                </button></td>
+                            <td> <button class="btn bg-gray" value="/">
+                                    <div class="char">÷</div>
+                                </button></td>
+                        </tr>
+                        <tr class="row">
+                            <td><button class="btn bg-light" value="4">
+                                    <div class="digit">4</div>
+                                </button></td>
+                            <td><button class="btn bg-light" value="5">
+                                    <div class="digit">5</div>
+                                </button></td>
+                            <td><button class="btn bg-light" value="6">
+                                    <div class="digit">6</div>
+                                </button></td>
+                            <td><button class="btn bg-gray" value="*">
+                                    <div class="char">×</div>
+                                </button></td>
+                        </tr>
+                        <tr class="row">
+                            <td><button class="btn bg-light" value="1">
+                                    <div class="digit">1</div>
+                                </button></td>
+                            <td><button class="btn bg-light" value="2">
+                                    <div class="digit">2</div>
+                                </button></td>
+                            <td><button class="btn bg-light" value="3">
+                                    <div class="digit">3</div>
+                                </button></td>
+                            <td><button class="btn bg-gray" value="-">
+                                    <div class="char">-</div>
+                                </button></td>
+                        </tr>
+                        <tr class="row">
+                            <td> <button class="btn bg-light" value="0">
+                                    <div class="digit">0</div>
+                                </button></td>
+                            <td><button class="btn bg-light" value=".">
+                                    <div class="digit">.</div>
+                                </button></td>
+                            <td> <button class="btn-total bg-gray" value="+">
+                                    <div class="char">+</div>
+                                </button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var equation = '';
+    var digit = document.getElementsByClassName('bg-light');
+    var op = document.getElementsByClassName('bg-gray');
+
+    function show(data) {
+        temp = data.replace('*', '×');
+        temp = temp.replace('/', '÷')
+        document.getElementById('screen').innerHTML = temp;
+    }
+
+    for (var i = 0; i < op.length; ++i) {
+        op[i].addEventListener('click', function () {
+            equation += this.value;
+            show(equation);
+        }, false)
+    }
+
+    for (var i = 0; i < digit.length; ++i) {
+        digit[i].addEventListener('click', function () {
+            equation += this.value;
+            show(equation);
+        }, false)
+    };
+
+    document.getElementById('clear').addEventListener('click', function () {
+        equation = '';
+        show(equation);
+    });
+
+    document.getElementById('caculate').addEventListener('click', function () {
+        try {
+            var result = eval(equation);
+            if (isNaN(result)) {
+                throw "";
+            }
+            else {
+                document.getElementById('screen').innerHTML = result;
+            }
+        }
+        catch (err) {
+            document.getElementById('screen').innerHTML = '算式错误';
+        }
+        finally {
+            equation = '';
+            setTimeout('document.getElementById("screen").innerHTML=""', 3000);
+        }
+    })
+</script>

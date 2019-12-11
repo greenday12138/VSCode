@@ -1,0 +1,421 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <student>
+    <id>20050001</id>
+    <name>张三</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050002</id>
+    <name>王静</name>
+    <sex>女</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>85</web>
+      <os>77</os>
+      <network>85</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050003</id>
+    <name>李林权</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>70</web>
+      <os>75</os>
+      <network>78</network>
+      <database>74</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050004</id>
+    <name>刘恒</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>73</web>
+      <os>71</os>
+      <network>68</network>
+      <database>69</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050005</id>
+    <name>李娜</name>
+    <sex>女</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>89</web>
+      <os>70</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050006</id>
+    <name>张天</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>70</web>
+      <os>85</os>
+      <network>74</network>
+      <database>78</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050007</id>
+    <name>王磊</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+
+
+    <student>
+      <id>20050008</id>
+      <name>曹爽</name>
+      <sex>男</sex>
+      <major>计算机科学与技术</major>
+      <grades>
+        <web>80</web>
+        <os>75</os>
+        <network>78</network>
+        <database>80</database>
+      </grades>
+    </student>
+
+
+    <student>
+      <id>20050009</id>
+      <name>张青</name>
+      <sex>男</sex>
+      <major>计算机科学与技术</major>
+      <grades>
+        <web>80</web>
+        <os>75</os>
+        <network>78</network>
+        <database>80</database>
+      </grades>
+    </student>
+
+
+    <student>
+      <id>20050010</id>
+      <name>李丽</name>
+      <sex>女</sex>
+      <major>计算机科学与技术</major>
+      <grades>
+        <web>80</web>
+        <os>75</os>
+        <network>78</network>
+        <database>80</database>
+      </grades>
+    </student>
+  </student>
+
+
+  <student>
+    <id>20050011</id>
+    <name>刘文</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050012</id>
+    <name>张忠</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050013</id>
+    <name>赵毅</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050014</id>
+    <name>赵庆</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050015</id>
+    <name>杨文</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050016</id>
+    <name>李昭</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050017</id>
+    <name>杨武</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+
+
+    <student>
+      <id>20050018</id>
+      <name>郑志强</name>
+      <sex>男</sex>
+      <major>计算机科学与技术</major>
+      <grades>
+        <web>80</web>
+        <os>75</os>
+        <network>78</network>
+        <database>80</database>
+      </grades>
+    </student>
+
+
+    <student>
+      <id>20150019</id>
+      <name>张涛</name>
+      <sex>男</sex>
+      <major>计算机科学与技术</major>
+      <grades>
+        <web>80</web>
+        <os>75</os>
+        <network>78</network>
+        <database>80</database>
+      </grades>
+    </student>
+
+
+    <student>
+      <id>20050020</id>
+      <name>周兵</name>
+      <sex>男</sex>
+      <major>计算机科学与技术</major>
+      <grades>
+        <web>80</web>
+        <os>75</os>
+        <network>78</network>
+        <database>80</database>
+      </grades>
+    </student>
+  </student>
+
+
+  <student>
+    <id>20050021</id>
+    <name>周宇</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050022</id>
+    <name>姚强</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050023</id>
+    <name>于立本</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050024</id>
+    <name>冯峰</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050025</id>
+    <name>李帅</name>
+    <sex>男</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>80</web>
+      <os>75</os>
+      <network>78</network>
+      <database>80</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050026</id>
+    <name>刘芳</name>
+    <sex>女</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>77</web>
+      <os>75</os>
+      <network>72</network>
+      <database>74</database>
+    </grades>
+  </student>
+
+
+  <student>
+    <id>20050027</id>
+    <name>吴芳</name>
+    <sex>女</sex>
+    <major>计算机科学与技术</major>
+    <grades>
+      <web>76</web>
+      <os>68</os>
+      <network>78</network>
+      <database>77</database>
+    </grades>
+
+
+    <student>
+      <id>20050028</id>
+      <name>路明</name>
+      <sex>男</sex>
+      <major>计算机科学与技术</major>
+      <grades>
+        <web>65</web>
+        <os>75</os>
+        <network>72</network>
+        <database>76</database>
+      </grades>
+    </student>
+
+
+    <student>
+      <id>20050029</id>
+      <name>李强</name>
+      <sex>男</sex>
+      <major>计算机科学与技术</major>
+      <grades>
+        <web>85</web>
+        <os>75</os>
+        <network>74</network>
+        <database>80</database>
+      </grades>
+    </student>
+
+
+    <student>
+      <id>20050030</id>
+      <name>薛瑞</name>
+      <sex>男</sex>
+      <major>计算机科学与技术</major>
+      <grades>
+        <web>80</web>
+        <os>71</os>
+        <network>78</network>
+        <database>82</database>
+      </grades>
+    </student>
+  </student>
+</root>

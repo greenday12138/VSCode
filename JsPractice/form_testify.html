@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>表单验证</title>
+</head>
+
+<body>
+    <!--content-->
+    <div id="bodyContent" class="body-content">
+        <form method="post">
+            <table>
+                <tr>
+                    <td class="td_left">
+                        用户名：
+                        <input type="text" name="form_loginname" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td_left">
+                        姓名：
+                        <input type="text" name="form_username" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td_left">
+                        密码：
+                        <input type="password" name="form_password">
+                    </td>
+                </tr>
+                <tr class="td_left">
+                    <td class="td_left">
+                        确认密码:
+                        <input type="password" name="form_checkpassword" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td_left">
+                        邮箱:
+                        <input type="email" name="form_email" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td_left">
+                        手机:
+                        <input type="tel" name="form_tel" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td_left">
+                        出生日期:
+                        <input type="date" name="form_date" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" name="form_save" onclick="return saveForm(this.form)" value="提交" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td_left"></td>
+                    <td><span id="save_info"></span></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+
+    <script type="text/javascript">
+
+        function saveForm(form) {
+            var check = true;
+            var info = document.getElementById("save_info");
+            var loginname = form.form_loginname.value;
+            var username = form.form_username.value;
+            var password = form.form_username.value;
+            var checkpassword = form.form_checkpassword.value;
+            var email = form.form_email.value;
+            var tel = form.form_tel.value;
+            var date = form.form_date.value;
+            info.innerHTML = "";
+
+            if (loginname == "") {
+                info.style.color = '#f00';
+                info.innerHTML = "用户名不能为空";
+                return false;
+            }
+            else {
+                if (!checkloginname(loginname)) {
+                    info.style.color = '#f00';
+                    info.innerHTML = "用户名只能为英文字母和数字";
+                    return false;
+                }
+            }
+            if (username == "") {
+                info.style.color = '#f00';
+                info.innerHTML = "姓名不能为空";
+                return false;
+            }
+            var checkpasswordinfo = confirmpassword(password, checkpassword);
+            if (checkpasswordinfo != "success") {
+                info.style.color = "#f00";
+                info.innerHTML = checkpasswordinfo;
+                return false;
+            }
+            if (email != "" &&!checkemail(email)) {
+                info.style.color = "#f00";
+                info.innerHTML = "邮箱格式错误，请重新输入";
+                return false;
+            }
+            if (tel != "" &&!checktel(tel)) {
+                info.style.color = "#f00";
+                info.innerHTML = "电话格式错误，请重新输入";
+                return false;
+            }
+            if (date != ""&& !checkdate(date)) {
+                info.style.color = "#f00";
+                info.innerHTML = "出生日期格式错误，请重新填写";
+                return false;
+            }
+            info.style.color="#0f0";
+            info.innerHTML="验证通过";
+            return true;
+        }
+        function checkloginname(name) {
+            var re = /^[A-Za-z0-9]+$/;
+            return re.test(name);
+        }
+        function confirmpassword(password, checkpassword) {
+            var info = "success";
+            if (password == "" || checkpassword == "") {
+                info = "密码/确认密码不能为空";
+                return info;
+            }
+            else {
+                if (password != checkpassword) {
+                    info = "两次输入的密码不同";
+                    return info;
+                }
+            }
+            return info;
+        }
+        function checkemail(email) {
+            var re = /^[\.A-Za-z0-9]+@[\.A-Za-z0-9]+[\.\.A-Za-z0-9]+&/;
+            return re.test(email);
+        }
+        function checktel(tel) {
+            var re = /^13[0-9]{9}&|14[0-9]{9}&|15[0-9]{9}&|18[0-9]{9}&|17[0-9]{9}&/;
+            return re.test(tel);
+        }
+        function checkdate(date){
+            return (new Date(date).getDate()==date.substring(date.length-2));
+        }
+    </script>
+</body>
+
+<style type="text/css">
+    .body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+</style>
+
+</html>
