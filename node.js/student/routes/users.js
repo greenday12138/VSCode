@@ -1,5 +1,5 @@
 var express = require('express');
-var db = require('./../db.js');
+var db = require('../db.js');
 var router = express.Router();
 
 router.get('/user', function(req, res, next) {
