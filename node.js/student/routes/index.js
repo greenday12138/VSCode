@@ -1,13 +1,14 @@
 var express = require('express');
 var db = require('../db.js');
 var router = express.Router();
+var path=require('path');
 
 router.get('/', function (req, res, next) {
     //express 原生的渲染页面方式：调用views文件夹下的jade，ejs模板引擎
     // res.render('index');
 
     //前后端分离架构应该用res.json或res.sendFile
-    const html = path.resolve(__dirname, '../public/html/temp.html');
+    const html = path.resolve(__dirname, '../public/html/index.html');
     res.sendFile(html);
 });
 
@@ -28,7 +29,6 @@ router.post('/', function (req, res, next) {
         };
         res.send(success);
     });
-    next();
 });
 
 module.exports = router;

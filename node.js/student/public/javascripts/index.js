@@ -1,6 +1,6 @@
 
-(function(global,$){
-    $("#save").click(function() {
+$(function () {
+    $("#save").click(function () {
         $.ajax({
             dataType: "json",
             async: true,
@@ -24,16 +24,15 @@
                 }, 500)
             },
             error: function () {
-                layer.alert("请求失败", {
-                    skin: 'layui-layer-molv',
-                    closeBtn: 0,
-                    shift: 2
-                });
+                // layer.alert("请求失败", {
+                //     skin: 'layui-layer-molv',
+                //     closeBtn: 0,
+                //     shift: 2
+                // });
             },
-            complete: function () {
+            // complete: function () {
 
-            }
+            // }
         })
     })
-}
-)(window,jQuery)
+})
