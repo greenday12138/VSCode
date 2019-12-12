@@ -7,7 +7,8 @@ router.get('/', function (req, res, next) {
   var sql = 'select * from `article`';
   db.DBConnection.query(sql, function (err, rows, fields) {
     var articles = rows;
-    res.render('index', { title: 'Express' });
+    console.log('success');
+    res.render('index', { title: 'Express',articles:articles});
   })
 });
 

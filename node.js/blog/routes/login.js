@@ -8,7 +8,7 @@ router.get('/', function (req, res, next) {
   res.render('login', { title: 'login' });
 });
 
-router.post('/', function (req, res, next) {
+router.post('/login', function (req, res, next) {
   var name = req.body.name;
   var password = req.body.password;
   var hash = crypto.createHash('md5');
