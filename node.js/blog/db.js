@@ -2,7 +2,7 @@ const mysql=require('mysql');
 
 const DB={
     host:'localhost',
-    port:'3000',
+    port:3306,
     user:'root',
     password:'root',
     database:'blog'
@@ -18,4 +18,4 @@ const DBConnection=mysql.createConnection({
 });
 DBConnection.connect();
 
-module.exports=DBConnection;
+module.exports.DBConnection=DBConnection;

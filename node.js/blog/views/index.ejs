@@ -1,11 +1,37 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='../public/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+
+<head>
+  <%- include('./public/head.ejs') -%>
+</head>
+
+<body>
+  <%- include('./public/header.ejs') -%>
+  <section class='main floatfix'>
+    <%- include('./public/aside.ejs') -%>
+    <section class="main-articles">
+      <ul>
+        <% for(var i=0,max=articles.length;i<max;++i){ %>
+            <li class="main-articles-items">
+              <h2>
+                <a href='/articles/<%= articles[i].articleID %>'><%= articles[i].articleTitle %></a>
+              </h2>
+              <section class="main-articles-items-des">
+                <p>
+                  <span>Writer: <%= articles[i].articleAuthor %></span>
+                  <span>Publish Time: <%= articles[i].articleTime %></span>
+                  <span>Page Views: <%= articles[i].articleClick %></span>
+                  <% if(user) { %>
+                  <span class="delete"><a href="/delete/<%= articles[i].articleID %>"</span>
+                  <span class="edit"><a href="/edit/<%= articles[i].articleID %>"</span>
+                  <% } %>
+                </p>
+              </section>
+            </li>
+        <% } %>
+      </ul>
+    </section>
+  </section>
+  <%- include('./public/footer.ejs') -%>
+</body>
+<script>
+</script>
