@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<head></head>
+<style>
+    /* body {
+        position: fixed
+    }
+
+    body {
+        text-align: center;
+        background: #444;
+        color: #fff
+    } */
+
+    .scrollY>a {
+        display: block;
+        color: #8ff;
+        text-decoration: none;
+        cursor: pointer;
+        line-height: 3em
+    }
+
+    .scrollY>a>b {
+        font-weight: normal;
+        display: inline-block;
+        background: #0f0;
+        color: #1c9cfe;
+        text-align: center;
+        line-height: 2em;
+        min-width: 5em;
+        margin: .5em .5em .5em 0;
+        border-radius: .1em 1.8em;
+    }
+
+    .scrollY>u {
+        float: right;
+        color: #8f0;
+        text-decoration: none;
+        cursor: pointer;
+        line-height: 3em
+    }
+
+    .box {
+        border: 1px solid #888;
+        padding: 0 14px;
+        margin: 6px;
+        height: 500px;
+        text-align: left;
+        font-size: 20px;
+        color: #555
+    }
+
+    .box li {
+        display: block;
+        padding: 0;
+        margin: .5em 0;
+        font: normal 1em/1.5em Arial;
+        cursor: default
+    }
+
+    .box li>i {
+        display: inline-block;
+        font: normal 1em/1.5em Arial;
+        height: 1.5em;
+        width: 1.5em;
+        text-align: center;
+        margin: 0 .3em;
+        background: #00f;
+        color: #fff;
+        border-radius: 100%;
+    }
+
+    .list>li[girl='true']>i {
+        background-color: #f0f
+    }
+
+    .list>li>b {
+        float: right;
+        color: #f00
+    }
+
+    .list>li>b[ok='true'] {
+        color: #0a0
+    }
+
+    .tree li {
+        position: relative
+    }
+
+    .tree li>a {
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        position: absolute;
+        left: -1em;
+        TOP: .25EM;
+        text-align: center;
+        font: bold 1em/1em 宋体;
+        border: 1px dotted #888;
+        box-sizing: border-box
+    }
+
+    .tree ul {
+        padding: 0;
+        margin: 0 0 0 2em
+    }
+</style>
+
+<body>
+    <div class="scrollY" style="top: 2rem; bottom: 1.6rem; background: rgb(255, 255, 255);">
+        <div style="float: right; width: 40%;">
+            <div class="list scrollY box" style="height: 300px; overflow:auto;overflow-x: hidden;">
+                
+            </div>
+            <div style="padding-left: 0.4em; text-align:center">
+                <button class="refresh" style="font-size: 28px;">刷新</button>
+            </div>
+
+        </div>
+
+        <div style="float:left;width:60%;">
+            <div class="tree scrollY box"
+                style="padding-left: 1.5em; height:350px; overflow:scroll;overflow-x: hidden;">
+                
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    window.onload = function () {
+        request();
+
+        var btn = document.getElementsByClassName('refresh');
+        for (var i = 0; i < btn.length; ++i) {
+            btn[i].onclick = function () {
+                request();
+                // addButton();
+            };
+        }
+
+    }
+
+    function collpase() {
+        //collapse button
+        var col = document.getElementsByTagName('a');
+        for (var i = 0; i < col.length; ++i) {
+            col[i].addEventListener('click', function () {
+                if (this.innerText === '-') {
+                    this.innerText = '+';
+                    var temp=this.nextElementSibling;
+                    temp=temp.nextElementSibling;
+                    temp.setAttribute('style','display:none');
+                }else{
+                    this.innerText='-';
+                    var temp=this.nextElementSibling;
+                    temp=temp.nextElementSibling;
+                    temp.setAttribute('style','display:none');
+                }
+            })
+        }
+    }
+
+    function display(data) {
+        console.log(data);
+        //display list
+        var list = document.getElementsByClassName('list');
+        list[0].innerHTML = "";
+        for (var iter = 0; iter < data.list.length; ++iter) {
+            var li = createNODE('li', '', [{ attr: 'girl', value: `${data.list[iter].gender === 0}` }]);
+            var text = createNODE('text', '#' + data.list[iter].sno + ' ' + data.list[iter].name, []);
+            var b = createNODE('b', data.list[iter].score, [{ attr: 'ok', value: `${data.list[iter].score >= 60}` }]);
+            var i = createNODE('i', iter + 1, []);
+
+            li.appendChild(b);
+            li.appendChild(i);
+            li.appendChild(text);
+
+            list[0].appendChild(li);
+        }
+
+        //display tree
+        var tree = document.getElementsByClassName('tree');
+        tree[0].innerHTML = "";
+
+        treeRender(tree[0], data.tree.id, data.tree.N, data.tree.C);
+
+        collpase();
+    }
+
+    function treeRender(tree, id, N, C) {
+        /*data format
+        [
+            {
+                id:number,
+                N:string,
+                C:data
+            }
+        ]
+        */
+
+        var li = createNODE('li', '', []);
+        if (C.length > 0) {
+            var a = createNODE('a', '-', []);
+            li.appendChild(a);
+        }
+        var i = createNODE('i', id, []);
+        var text = createNODE('text', N, []);
+        li.appendChild(i);
+        li.appendChild(text);
+
+        if (C.length > 0) {
+            var ul = createNODE('ul', '', []);
+
+            for (var i = 0; i < C.length; ++i) {
+                treeRender(ul, C[i].id, C[i].N, C[i].C);
+            }
+
+            li.appendChild(ul);
+        }
+
+        tree.appendChild(li);
+    }
+
+    function createNODE(type, text, attrs) {
+        //attrs format
+        /*
+        [
+            {attr:'', value:''},
+            {...}
+        ]
+        */
+        if (type === 'text') {
+            var node = document.createTextNode(text);
+        } else {
+            var node = document.createElement(type);
+            var txt = document.createTextNode(text);
+            for (var i = 0; i < attrs.length; ++i) {
+                node.setAttribute(attrs[i].attr, attrs[i].value);
+            }
+            node.appendChild(txt);
+        }
+
+        return node;
+    }
+    // function addButton() {
+    //     var node = document.createElement('button');
+    //     node.setAttribute('id', 'refresh');
+    //     node.onclick = addButton;
+    //     document.getElementById('content')
+    //     document.getElementById('content').appendChild(node);
+    // }
+
+    function request() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            xmlhttp = new ActiveXObject();
+        }
+
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                var data = JSON.parse(xmlhttp.responseText);
+                if (data.no === 500) {
+                    alert(data.msg);
+                } else {
+                    display(data);
+                }
+                // var re = JSON.parse(xmlhttp.responseText);
+                // if (re.msg === undefined) {
+                //     if (sessionStorage.length === 0) {
+                //         sessionStorage.setItem(re.tree.N, JSON.stringify(re));
+                //     } else {
+                //         if (sessionStorage.getItem(re.tree.N) === null) {
+                //             console.log(re);
+                //             sessionStorage.setItem(re.tree.N, JSON.stringify(re));
+                //         }
+                //     }
+
+                // }
+
+                // var node = document.createElement('p');
+                // node.innerText = xmlhttp.responseText;
+                // node.setAttribute('id', 'info');
+                // if (document.getElementById('content').childElementCount > 0)
+                //     document.getElementById('content').removeChild(document.getElementById('info'));
+                // document.getElementById('content').appendChild(node);
+            }
+        }
+
+
+        xmlhttp.open('get', 'http://ext.gaomuxuexi.com:5870/task/random', true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send();
+    }
+</script>
