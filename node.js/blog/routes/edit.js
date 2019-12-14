@@ -1,9 +1,11 @@
 var express=require('express');
 var db=require('../db');
 var router=express.Router();
+var app=express();
 
 //create new blog
 router.get('/',function(req,res,next){
+    app.use(express.static(__dirname+'/public'));
     res.render('edit',{title:'Edit'});
 })
 

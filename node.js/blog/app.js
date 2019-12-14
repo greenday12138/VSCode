@@ -13,7 +13,6 @@ var editRouter=require('./routes/edit');
 var modifyRouter=require('./routes/modify');
 var aboutRouter=require('./routes/about');
 var friendsRouter=require('./routes/friends');
-var articleRouter=require('./routes/article');
 
 var app = express();
 
@@ -33,7 +32,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 app.use('/index', indexRouter);
 app.use('/user', usersRouter);
@@ -43,7 +42,6 @@ app.use('/edit',editRouter);
 app.use('/modify',modifyRouter);
 app.use('/about',aboutRouter);
 app.use('/friends',friendsRouter);
-app.use('/article',articleRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

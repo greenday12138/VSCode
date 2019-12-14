@@ -2,6 +2,7 @@
 
 <html>
 <%- include('./public/head.ejs') %>
+
 <body>
   <%- include('./public/header.ejs') -%>
   <section class='main floatfix'>
@@ -9,27 +10,36 @@
     <section class="main-articles">
       <ul>
         <% for(var i=0,max=articles.length;i<max;++i){ %>
-            <li class="main-articles-items">
-              <h2>
-                <a href='/index/article/<%= articles[i].articleID %>'><%= articles[i].articleTitle %></a>
-              </h2>
-              <section class="main-articles-items-des">
-                <p>
-                  <span>Writer: <%= articles[i].articleAuthor %></span>
-                  <span>Publish Time: <%= articles[i].articleTime %></span>
-                  <span>Page Views: <%= articles[i].articleClick %></span>
-                  <% if(user) { %>
-                  <span class="delete"><a href="/index/<%= articles[i].articleID %>">Delete</a></span>
-                  <span class="edit"><a href="/modify/<%= articles[i].articleID %>">Edit</a></span>
-                  <% } %>
-                </p>
-              </section>
-            </li>
+        <li class="main-articles-items">
+          <h2>
+            <a href='/index/article/<%= articles[i].articleID %>'><%= articles[i].articleTitle %></a>
+          </h2>
+          <section class="main-articles-items-des">
+            <p>
+              <span>Writer: <%= articles[i].articleAuthor %></span>
+              <span>Publish Time: <%= articles[i].articleTime %></span>
+              <span>Page Views: <%= articles[i].articleClick %></span>
+              <% if(user) { %>
+              <span class="delete"><a href="/index/<%= articles[i].articleID %>">Delete</a></span>
+              <span class="edit"><a href="/modify/<%= articles[i].articleID %>">Edit</a></span>
+              <% } %>
+            </p>
+          </section>
+        </li>
         <% } %>
       </ul>
+      <% if(pageNum>1) { %>
+      <section class="page">
+        <% for(var i=0,max=pageNum;i<pageNum;++i) { %>
+        <span <% if(i==page) { %> class="active" <% } %>>
+          <a href="/index/?page=<%= i+1 %>"><%= i+1 %></a>
+        </span>
+        <% } %>
+      </section>
+      <% } %>
     </section>
   </section>
   <%- include('./public/footer.ejs') %>
 </body>
+
 </html>
-  
