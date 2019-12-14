@@ -1,14 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-ch" class="login">
 
-<head>
-  <meta charset="UTF-8">
-  <title>Node的个人博客</title>
-  <meta http-equiv="X-UA-Compatible" content="IE-Edge,chrome=1">
-  <meta name="description" content="Node的个人博客,分享Node.js技术">
-  <meta name="keywords" content="Node">
-  <link rel="stylesheet" href="/stylesheets/style.css">
-</head>
+<%- include('./public/head.ejs') %>
 
 <body>
   <section>
@@ -24,10 +17,7 @@
       </div>
     </form>
   </section>
-  <footer>
-    <p>Copyright: greenday12138</p>
-    <p>Powered by express</p>
-  </footer>
+  <%- include('./public/footer.ejs') %>
 </body>
 
 </html>

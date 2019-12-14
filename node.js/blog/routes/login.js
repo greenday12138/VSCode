@@ -26,6 +26,7 @@ router.post('/login', function (req, res, next) {
     }
     var user = rows[0];
     if (user) {
+      req.session.user=user;
       res.redirect('/index');
     }
   })

@@ -22,9 +22,9 @@ router.post('/',function(req,res,next){
         if(err){
             console.error(err);
             return;
-        }else{
-            console.log("INSERT SUCCESS");
         }
+        console.log("INSERT SUCCESS");
+        res.redirect('/');
     })
 })
 
