@@ -266,7 +266,13 @@
         }
 
         //remove origin html
+        var parent=document.getElementById(data[0]).parentElement;
+        console.log(parent);
+        console.log(parent.parentElement);
         document.getElementById(data[0]).remove();
+        if(parent.innerHTML===''){
+            parent.parentElement.getElementsByTagName('a')[0].remove();
+        }
     }
 
     function display(data) {
