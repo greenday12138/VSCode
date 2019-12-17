@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<head></head>
+<style>
+    .droptarget {
+        float: left;
+        width: 100px;
+        height: 35px;
+        margin: 15px;
+        padding: 10px;
+        border: 1px solid #aaaaaa;
+    }
+
+    /* body {
+        position: fixed
+    }
+
+    body {
+        text-align: center;
+        background: #444;
+        color: #fff
+    } */
+
+    .scrollY>a {
+        display: block;
+        color: #8ff;
+        text-decoration: none;
+        cursor: pointer;
+        line-height: 3em
+    }
+
+    .scrollY>a>b {
+        font-weight: normal;
+        display: inline-block;
+        background: #0f0;
+        color: #1c9cfe;
+        text-align: center;
+        line-height: 2em;
+        min-width: 5em;
+        margin: .5em .5em .5em 0;
+        border-radius: .1em 1.8em;
+    }
+
+    .scrollY>u {
+        float: right;
+        color: #8f0;
+        text-decoration: none;
+        cursor: pointer;
+        line-height: 3em
+    }
+
+    .box {
+        border: 1px solid #888;
+        padding: 0 14px;
+        margin: 6px;
+        height: 500px;
+        text-align: left;
+        font-size: 20px;
+        color: #555
+    }
+
+    .box li {
+        display: block;
+        padding: 0;
+        margin: .5em 0;
+        font: normal 1em/1.5em Arial;
+        cursor: default
+    }
+
+    *[ico] {
+        display: inline-block;
+        box-shadow: inset 0 0 0 1px #00f;
+        vertical-align: middle;
+        width: 1em;
+        height: 1em;
+        margin: 0 .5em
+    }
+
+    i[ico="0"] {
+        border-radius: 0 .5em;
+        box-shadow: inset 0 0 0 1px #00f, inset .2em .2em 0 .2em #00f;
+    }
+
+    i[ico="1"] {
+        border-radius: 1em
+    }
+
+    i[ico="2"] {
+        border-radius: 1em;
+        background: #00f
+    }
+
+    i[ico="4"] {
+        background: #00f
+    }
+
+    .list>li[girl='true']>i {
+        background-color: #f0f
+    }
+
+    .list>li>b {
+        float: right;
+        color: #f00
+    }
+
+    .list>li>b[ok='true'] {
+        color: #0a0
+    }
+
+    .tree li {
+        position: relative
+    }
+
+    .tree li>a {
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        position: absolute;
+        left: -1em;
+        TOP: .25EM;
+        text-align: center;
+        font: bold 1em/1em 宋体;
+        border: 1px dotted #888;
+        box-sizing: border-box
+    }
+
+    .tree ul {
+        padding: 0;
+        margin: 0 0 0 2em
+    }
+</style>
+
+<body>
+    <div class="scrollY" style="top: 2rem; bottom: 1.6rem; background: rgb(255, 255, 255);">
+        <div style="float: right; width: 40%;">
+            <div class="list scrollY box" style="height: 300px; overflow:auto;overflow-x: hidden;"
+                ondrop='dropList(event)' ondragover="dragoverList(event)">
+
+            </div>
+            <div style="padding-left: 0.4em; text-align:center">
+                <button class="refresh" style="font-size: 28px;">刷新</button>
+            </div>
+
+        </div>
+
+        <div style="float:left;width:60%;">
+            <div class="tree scrollY box" style="padding-left: 1.5em; height:350px; overflow:scroll;overflow-x: hidden;"
+                ondrop="dropTree(event)" ondragover="dragoverTree(event)">
+
+            </div>
+        </div>
+    </div>
+    <div class='droptarget' ondrop='dropHandler(event)' ondragover="dragoverHandler(event)">
+        <p draggable="true" ondragstart="drag(event)" id="drag">TEST</p>
+    </div>
+    <div class='droptarget' ondrop='dropHandler(event)' ondragover="dragoverHandler(event)"></div>
+</body>
+<script>
+    function dropHandler(event) {
+        event.preventDefault();
+        var data = event.dataTransfer.getData('Text');
+        event.target.appendChild(document.getElementById(data));
+    }
+    function drag(event) {
+        event.dataTransfer.setData('Text', event.target.id);
+    }
+    function dragoverHandler(event) {
+        event.preventDefault();
+    }
+</script>
+<script>
+    window.onload = function () {
+        request();
+
+        var btn = document.getElementsByClassName('refresh');
+        for (var i = 0; i < btn.length; ++i) {
+            btn[i].onclick = function () {
+                request();
+                // addButton();
+            };
+        }
+
+    }
+
+    function dragList(event) {
+        event.dataTransfer.setData('text', event.target.id);
+    }
+    function dragoverTree(event) {
+        event.preventDefault();
+    }
+    function dropTree(event) {
+        event.preventDefault();
+        var data = event.dataTransfer.getData('text');
+        var ul = event.target.getElementsByTagName('ul');
+
+        if (ul.length > 0) {
+            //with sub_tree
+            ul[0].appendChild(document.getElementById(data));
+        } else {
+            //without sub_tree
+            var sub_ul = createNODE('ul', '', []);
+            sub_ul.appendChild(document.getElementById(data));
+            event.target.appendChild(sub_ul);
+            var a = createNODE('a', '-', []);
+            Collapse(a);
+            event.target.insertBefore(a, event.target.getElementsByTagName('i')[0]);
+        }
+    }
+
+    function treeIter(list,tree){
+        list=list.concat(tree.id+',');
+        var ul=tree.getElementsByTagName('ul')[0];
+        if(ul){
+            var li=ul.getElementsByTagName('li');
+            for(var j=0,max=li.length;j<max;++j){
+                list=treeIter(list,li[j]);
+            }
+        }
+        return list;
+    }
+    function dragTree(event) {
+        var node_list=treeIter('',event.target);
+        event.dataTransfer.setData('text', node_list);
+    }
+    function dragoverList(event) {
+        event.preventDefault();
+    }
+    function dropList(event) {
+        event.preventDefault();
+        //data: [tree_0,li_1,tree_1,tree_2]
+        var data = event.dataTransfer.getData('text').split(',');
+        data.pop();
+       
+        console.log(data+' '+data.length);
+        for (var j = 0, max = data.length; j < max; ++j) {
+            var node = document.getElementById(data[j]);
+            var li = createNODE('li', '', [{
+                attr: 'draggable',
+                value: 'true'
+            },
+            {
+                attr: 'ondragstart',
+                value: 'dragList(event)'
+            },
+            {
+                attr: 'id',
+                value: 'li_'+data[j]
+            }]);
+
+            
+            var i = createNODE('i', '', [{
+                attr: 'ico',
+                value: node.getElementsByTagName('i')[0].getAttribute('ico')
+            }])
+            var txt;
+            for(var iter=0,len=node.childNodes.length;iter<len;++iter){
+                if(node.childNodes[iter].nodeType===3)//通过nodeType是不是文本节点来判断
+                    txt=node.childNodes[iter].nodeValue;
+            }
+            // 天坑 node list 和 html collection的区别
+            var text = createNODE('text', txt, []);
+            li.appendChild(i);
+            li.appendChild(text);
+
+            event.target.appendChild(li);
+        }
+
+        //remove origin html
+        document.getElementById(data[0]).remove();
+    }
+
+    function display(data) {
+        console.log(data);
+        //display list
+        var list = document.getElementsByClassName('list');
+        list[0].innerHTML = "";
+        for (var iter = 0; iter < data.list.length; ++iter) {
+            var li = createNODE('li', '', [{
+                attr: 'draggable',
+                value: 'true'
+            },
+            {
+                attr: 'ondragstart',
+                value: 'dragList(event)'
+            },
+            {
+                attr: 'id',
+                value: 'li_' + iter
+            }]);
+            var text = createNODE('text', data.list[iter].N, []);
+            var i = createNODE('i', '', [{ attr: 'ico', value: data.list[iter].type.toString() }]);
+
+            li.appendChild(i);
+            li.appendChild(text);
+
+            list[0].appendChild(li);
+        }
+
+        //display tree
+        var tree = document.getElementsByClassName('tree');
+        tree[0].innerHTML = "";
+
+        treeRender(tree[0], data.tree.type, data.tree.N, data.tree.C, iter = 0);
+    }
+
+    function treeRender(tree, type, N, C, iter) {
+        /*data format
+        [
+            {
+                type:number,
+                N:string,
+                C:data
+            }
+        ]
+        */
+
+        var li = createNODE('li', '', [{
+            attr: 'draggable',
+            value: `${iter != 0}`
+        },
+        {
+            attr: 'ondragstart',
+            value: 'dragTree(event)'
+        },
+        {
+            attr: 'id',
+            value: 'tree_' + iter
+        },
+        {
+            attr: 'ondrop',
+            value: 'dropTree(event)'
+        },
+        {
+            attr: 'ondragover',
+            value: 'dragoverTree(event)'
+        }]);
+        if (C.length > 0) {
+            var a = createNODE('a', '-', []);
+            Collapse(a);
+            li.appendChild(a);
+        }
+        var i = createNODE('i', '', [{
+            attr: 'ico',
+            value: type.toString(),
+        }]);
+        var text = createNODE('text', N, []);
+        li.appendChild(i);
+        li.appendChild(text);
+
+        if (C.length > 0) {
+            var ul = createNODE('ul', '', []);
+
+            for (var i = 0; i < C.length; ++i) {
+                ++iter;
+                iter = treeRender(ul, C[i].type, C[i].N, C[i].C, iter);
+            }
+
+            li.appendChild(ul);
+        }
+
+        tree.appendChild(li);
+        return iter;
+    }
+
+    function Collapse(node) {
+        //collapse button
+        node.addEventListener('click', function () {
+            if (node.innerText === '-') {
+                node.innerText = '+';
+                var temp = node.nextElementSibling;
+                temp = temp.nextElementSibling;
+                temp.setAttribute('style', 'display:none');
+            } else {
+                node.innerText = '-';
+                var temp = node.nextElementSibling;
+                temp = temp.nextElementSibling;
+                temp.setAttribute('style', 'display:auto');
+            }
+        })
+    }
+
+    function createNODE(type, text, attrs) {
+        //attrs format
+        /*
+        [
+            {attr:'', value:''},
+            {...}
+        ]
+        */
+        if (type === 'text') {
+            var node = document.createTextNode(text);
+        } else {
+            var node = document.createElement(type);
+            var txt = document.createTextNode(text);
+            for (var i = 0; i < attrs.length; ++i) {
+                node.setAttribute(attrs[i].attr, attrs[i].value);
+            }
+            node.appendChild(txt);
+        }
+
+        return node;
+    }
+    // function addButton() {
+    //     var node = document.createElement('button');
+    //     node.setAttribute('id', 'refresh');
+    //     node.onclick = addButton;
+    //     document.getElementById('content')
+    //     document.getElementById('content').appendChild(node);
+    // }
+
+    function request() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            xmlhttp = new ActiveXObject();
+        }
+
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                var data = JSON.parse(xmlhttp.responseText);
+                if (data.no === 500) {
+                    alert(data.msg);
+                } else {
+                    display(data);
+                }
+                // var re = JSON.parse(xmlhttp.responseText);
+                // if (re.msg === undefined) {
+                //     if (sessionStorage.length === 0) {
+                //         sessionStorage.setItem(re.tree.N, JSON.stringify(re));
+                //     } else {
+                //         if (sessionStorage.getItem(re.tree.N) === null) {
+                //             console.log(re);
+                //             sessionStorage.setItem(re.tree.N, JSON.stringify(re));
+                //         }
+                //     }
+
+                // }
+
+                // var node = document.createElement('p');
+                // node.innerText = xmlhttp.responseText;
+                // node.setAttribute('id', 'info');
+                // if (document.getElementById('content').childElementCount > 0)
+                //     document.getElementById('content').removeChild(document.getElementById('info'));
+                // document.getElementById('content').appendChild(node);
+            }
+        }
+
+
+        xmlhttp.open('get', 'http://ext.gaomuxuexi.com:5870/task/nodes', true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send();
+    }
+</script>
