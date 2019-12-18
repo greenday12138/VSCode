@@ -2,15 +2,6 @@
 
 <head></head>
 <style>
-    .droptarget {
-        float: left;
-        width: 100px;
-        height: 35px;
-        margin: 15px;
-        padding: 10px;
-        border: 1px solid #aaaaaa;
-    }
-
     /* body {
         position: fixed
     }
@@ -52,7 +43,7 @@
     .box {
         border: 1px solid #888;
         padding: 0 14px;
-        margin: 6px;
+        margin: 0px, 5px, 5px, 10px;
         height: 500px;
         text-align: left;
         font-size: 20px;
@@ -131,43 +122,20 @@
 </style>
 
 <body>
-    <div class="scrollY" style="top: 2rem; bottom: 1.6rem; background: rgb(255, 255, 255);">
-        <div id='list' style="float: right; width: 40%;">
-            <div class="list scrollY box" style="height: 300px; overflow:auto;overflow-x: hidden;"
-                ondrop='dropList(event)' ondragover="dragoverList(event)">
-
-            </div>
-            <div style="padding-left: 0.4em; text-align:center">
-                <button class="refresh" style="font-size: 28px;">刷新</button>
-            </div>
-
+    <div class="absfull scrollY" style="top: 2rem; bottom: 1.6rem; background: rgb(255, 255, 255);">
+        <div class="list scrollY box"
+            style="float: right; width: 40%; height: 500px;overflow:auto;overflow-x: hidden;margin-left: 10px;"
+            ondrop='dropList(event)' ondragover="dragoverList(event)">
         </div>
-
-        <div id='tree' style="float:left;width:60%;">
-            <div class="tree scrollY box" style="padding-left: 1.5em; height:350px; overflow:scroll;overflow-x: hidden;"
-                ondrop="dropTree(event)" ondragover="dragoverTree(event)">
-
-            </div>
+        <div class="tree scrollY box" style="padding-left: 1.5em;height:500px;overflow:scroll;overflow-x: hidden;"
+            ondrop="dropTree(event)" ondragover="dragoverTree(event)">
+        </div>
+        <div style="text-align: right; padding-left:65%;padding-top:5px">
+            <input type="button" value="刷新" onclick="request()" style="font-size: 28px;">
+            <input type="button" value="提交" style="font-size: 28px;">
         </div>
     </div>
-    <div class='droptarget' ondrop='dropHandler(event)' ondragover="dragoverHandler(event)">
-        <p draggable="true" ondragstart="drag(event)" id="drag">TEST</p>
-    </div>
-    <div class='droptarget' ondrop='dropHandler(event)' ondragover="dragoverHandler(event)"></div>
 </body>
-<script>
-    function dropHandler(event) {
-        event.preventDefault();
-        var data = event.dataTransfer.getData('Text');
-        event.target.appendChild(document.getElementById(data));
-    }
-    function drag(event) {
-        event.dataTransfer.setData('Text', event.target.id);
-    }
-    function dragoverHandler(event) {
-        event.preventDefault();
-    }
-</script>
 <script>
     window.onload = function () {
         request();
@@ -182,47 +150,118 @@
 
     }
 
-
     function dragList(event) {
         if (event.target.getAttribute('selected') === 'false') {
             event.dataTransfer.setData('text', event.target.id);
         } else {
-            var select_list = document.querySelectorAll('[selected="true"]');
+            var select_list = document.getElementsByClassName('list')[0].querySelectorAll('[selected="true"]');
             var data = [];
             for (var j = 0, len = select_list.length; j < len; ++j) {
                 data.push(select_list[j].id);
             }
             event.dataTransfer.setData('text', data.toString());
         }
-        console.log(event.dataTransfer.getData('text'));
+        //console.log(event.dataTransfer.getData('text'));
     }
     function dragoverTree(event) {
         event.preventDefault();
     }
     function dropTree(event) {
         event.preventDefault();
-        //data:[li_1,li_li_5] or[li_1] 
+        //data from list:[tree_1,li_li_5] or[li_1] 
+        //data from tree:[tree_2,li_4] or[tree_1]
         var data = event.dataTransfer.getData('text').split(',');
+        var parent = document.getElementById(event.dataTransfer.getData('parent_tree'));
         console.log(data);
-        var ul = event.target.getElementsByTagName('ul');
+        console.log(parent);
 
-        if (ul.length > 0) {
+        var ul = event.target.getElementsByTagName('ul')[0];
+
+        if (ul != undefined) {
             //with sub_tree
-            for(var j=0,len=data.length;j<len;++j){
-                ul[0].appendChild(document.getElementById(data[j]));
+
+            if (!parent) {
+                //parent = null or undefined
+                //draged data come from list
+                for (var j = 0, len = data.length; j < len; ++j) {
+                    //unselect move item
+                    document.getElementById(data[j]).setAttribute('selected', 'false');
+                    document.getElementById(data[j]).setAttribute('style', 'none');
+                    ul.appendChild(document.getElementById(data[j]));
+                }
+            } else {
+                //draged data come from tree
+                var subtreeRoot = document.getElementById(data[0]);
+
+                //forbid drag tree to its subtree
+                if (subtreeRoot.querySelector(`#${event.target.id}`) === null) {
+                    ul.appendChild(subtreeRoot);
+                }
+                //event.dataTransfer.clearData('parent_tree');
             }
+
         } else {
             //without sub_tree
             var sub_ul = createNODE('ul', '', []);
 
-            for(var j=0,len=data.length;j<len;++j){
-                sub_ul.appendChild(document.getElementById(data[j]));
+            if (!parent) {
+                //parent = null or undefined
+                //draged data come from list
+                for (var j = 0, len = data.length; j < len; ++j) {
+                    //unselect move item
+                    document.getElementById(data[j]).setAttribute('selected', 'false');
+                    document.getElementById(data[j]).setAttribute('style', 'none');
+                    sub_ul.appendChild(document.getElementById(data[j]));
+
+                    event.target.appendChild(sub_ul);
+                    var a = createNODE('a', '-', []);
+                    Collapse(a);
+                    event.target.insertBefore(a, event.target.getElementsByTagName('i')[0]);
+                }
+            } else {
+                //draged data come from tree
+                var subtreeRoot = document.getElementById(data[0]);
+
+                //forbid drag tree to its subtree
+                if (subtreeRoot.querySelector(`#${event.target.id}`) === null) {
+                    sub_ul.appendChild(subtreeRoot);
+
+                    //only append to node which is not dragging target's child
+                    event.target.appendChild(sub_ul);
+                    var a = createNODE('a', '-', []);
+                    Collapse(a);
+                    event.target.insertBefore(a, event.target.getElementsByTagName('i')[0]);
+                }
+                //event.dataTransfer.clearData('parent_tree');
             }
-            
-            event.target.appendChild(sub_ul);
-            var a = createNODE('a', '-', []);
-            Collapse(a);
-            event.target.insertBefore(a, event.target.getElementsByTagName('i')[0]);
+
+
+        }
+
+        //move one subtree to anthor tree item, if removed subtree has no nodes,remove collapse button
+        //the draged data come fom tree
+        if (parent != undefined) {
+            //below procesures may run many times
+            var ul = parent.getElementsByTagName('ul')[0],
+                a = parent.getElementsByTagName('a')[0];
+            if (!ul) {//ul===undefined
+                if (a != undefined) {
+                    a.remove();
+                }
+            }
+            else {
+                //console.log(ul.innerHTML);
+                if (ul.innerHTML === '') {
+                    var a = parent.getElementsByTagName('a')[0],
+                        ul = parent.getElementsByTagName('ul')[0];
+                    if (a != undefined) {
+                        a.remove();
+                    }
+                    if (ul != undefined) {
+                        ul.remove();
+                    }
+                }
+            }
         }
     }
 
@@ -239,7 +278,16 @@
     }
     function dragTree(event) {
         var node_list = treeIter('', event.target);
-        event.dataTransfer.setData('text', node_list);
+        //remove last ,
+        var temp = node_list.split(',');
+        temp.pop();
+
+        //save parent_tree for tree draging between subtrees
+        var parent = document.getElementById(temp[0]).parentElement.parentElement.id;
+        event.dataTransfer.setData('parent_tree', parent);
+
+        //normal data for draging subtree to list
+        event.dataTransfer.setData('text', temp.toString());
     }
     function dragoverList(event) {
         event.preventDefault();
@@ -248,7 +296,6 @@
         event.preventDefault();
         //data: [tree_0,li_1,tree_1,tree_2]
         var data = event.dataTransfer.getData('text').split(',');
-        data.pop();
 
         console.log(data + ' ' + data.length);
         for (var j = 0, max = data.length; j < max; ++j) {
@@ -262,10 +309,6 @@
                 value: 'dragList(event)'
             },
             {
-                attr: 'onclick',
-                value: 'selectList(this)'
-            },
-            {
                 attr: 'selected',
                 value: 'false'
             },
@@ -273,7 +316,7 @@
                 attr: 'id',
                 value: 'li_' + data[j]
             }]);
-
+            Select(li);
 
             var i = createNODE('i', '', [{
                 attr: 'ico',
@@ -300,6 +343,7 @@
         document.getElementById(data[0]).remove();
         if (parent.innerHTML === '') {
             parent.parentElement.getElementsByTagName('a')[0].remove();
+            parent.parentElement.getElementsByTagName('ul')[0].remove();
         }
     }
 
@@ -319,10 +363,6 @@
                     value: 'dragList(event)'
                 },
                 {
-                    attr: 'onclick',
-                    value: 'selectList(this)'
-                },
-                {
                     attr: 'selected',
                     value: 'false'
                 },
@@ -330,6 +370,7 @@
                     attr: 'id',
                     value: 'li_' + iter
                 }]);
+            Select(li);
             var text = createNODE('text', data.list[iter].N, []);
             var i = createNODE('i', '', [{ attr: 'ico', value: data.list[iter].type.toString() }]);
 
@@ -377,7 +418,12 @@
             {
                 attr: 'ondragover',
                 value: 'dragoverTree(event)'
+            },
+            {
+                attr: 'selected',
+                value: 'false'
             }]);
+        Select(li);
         if (C.length > 0) {
             var a = createNODE('a', '-', []);
             Collapse(a);
@@ -408,7 +454,7 @@
 
     function Collapse(node) {
         //collapse button
-        node.addEventListener('click', function () {
+        node.addEventListener('click', function (e) {
             if (node.innerText === '-') {
                 node.innerText = '+';
                 var temp = node.nextElementSibling;
@@ -420,19 +466,23 @@
                 temp = temp.nextElementSibling;
                 temp.setAttribute('style', 'display:auto');
             }
-        })
+            e.stopPropagation();
+        });
     }
 
-    function selectList(el) {
-        if (el.getAttribute('selected') === 'true') {
-            //console.log('true');
-            el.setAttribute('selected', 'false');
-            el.style = 'none';
-        } else {
-            el.setAttribute('selected', 'true');
-            el.style.color = 'blue';
-        }
-
+    function Select(el) {
+        //select item
+        el.addEventListener('click', function (event) {
+            if (el.getAttribute('selected') === 'true') {
+                //console.log('true');
+                el.setAttribute('selected', 'false');
+                el.style = 'none';
+            } else {
+                el.setAttribute('selected', 'true');
+                el.style.color = 'blue';
+            }
+            event.stopPropagation();
+        })
     }
 
     function createNODE(type, text, attrs) {
