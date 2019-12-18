@@ -132,7 +132,7 @@
         </div>
         <div style="text-align: right; padding-left:65%;padding-top:5px">
             <input type="button" value="刷新" onclick="request()" style="font-size: 28px;">
-            <input type="button" value="提交" style="font-size: 28px;">
+            <input type="button" value="提交" onclick='submit()' style="font-size: 28px;">
         </div>
     </div>
 </body>
@@ -513,6 +513,62 @@
     //     document.getElementById('content')
     //     document.getElementById('content').appendChild(node);
     // }
+    function TreeToData(node) {
+        var tree_data = {
+            type: node.getElementsByTagName('i')[0].getAttribute('ico'),
+            N: '',
+            C: []
+        }
+
+        for (var iter = 0, len = node.childNodes.length; iter < len; ++iter) {
+            if (node.childNodes[iter].nodeType === 3)//通过nodeType是不是文本节点来判断
+                tree_data.N = node.childNodes[iter].nodeValue;
+        }
+
+        var ul = node.getElementsByTagName('ul')[0];
+        if (ul) {
+            for (var i = 0, len = ul.children.length; i < len; ++i) {
+                tree_data.C.push(TreeToData(ul.children[i]));
+            }
+        }
+        return tree_data;
+    }
+
+    function submit() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            xmlhttp = new ActiveXObject();
+        }
+
+        //get list data
+        var list = document.getElementsByClassName('list')[0].children;
+        var list_data = [];
+        for (var i = 0, len = list.length; i < len; ++i) {
+            list_data.push({
+                type: list[i].firstElementChild.getAttribute('ico'),
+                N: list[i].innerText
+            })
+        }
+        console.log(list_data);
+        //get tree data
+        var tree_data = TreeToData(document.getElementById('tree_0'));
+        console.log(tree_data);
+
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                console.log(JSON.parse(xmlhttp.responseText));
+            }
+        }
+
+        xmlhttp.open('post', 'http://ext.gaomuxuexi.com:5870/task/nodesCommit', true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        xmlhttp.send({
+            list:JSON.stringify(list_data),
+            tree:JSON.stringify(tree_data)
+        });
+    }
 
     function request() {
         var xmlhttp;
