@@ -132,7 +132,7 @@
 
 <body>
     <div class="scrollY" style="top: 2rem; bottom: 1.6rem; background: rgb(255, 255, 255);">
-        <div style="float: right; width: 40%;">
+        <div id='list' style="float: right; width: 40%;">
             <div class="list scrollY box" style="height: 300px; overflow:auto;overflow-x: hidden;"
                 ondrop='dropList(event)' ondragover="dragoverList(event)">
 
@@ -143,7 +143,7 @@
 
         </div>
 
-        <div style="float:left;width:60%;">
+        <div id='tree' style="float:left;width:60%;">
             <div class="tree scrollY box" style="padding-left: 1.5em; height:350px; overflow:scroll;overflow-x: hidden;"
                 ondrop="dropTree(event)" ondragover="dragoverTree(event)">
 
@@ -182,24 +182,43 @@
 
     }
 
+
     function dragList(event) {
-        event.dataTransfer.setData('text', event.target.id);
+        if (event.target.getAttribute('selected') === 'false') {
+            event.dataTransfer.setData('text', event.target.id);
+        } else {
+            var select_list = document.querySelectorAll('[selected="true"]');
+            var data = [];
+            for (var j = 0, len = select_list.length; j < len; ++j) {
+                data.push(select_list[j].id);
+            }
+            event.dataTransfer.setData('text', data.toString());
+        }
+        console.log(event.dataTransfer.getData('text'));
     }
     function dragoverTree(event) {
         event.preventDefault();
     }
     function dropTree(event) {
         event.preventDefault();
-        var data = event.dataTransfer.getData('text');
+        //data:[li_1,li_li_5] or[li_1] 
+        var data = event.dataTransfer.getData('text').split(',');
+        console.log(data);
         var ul = event.target.getElementsByTagName('ul');
 
         if (ul.length > 0) {
             //with sub_tree
-            ul[0].appendChild(document.getElementById(data));
+            for(var j=0,len=data.length;j<len;++j){
+                ul[0].appendChild(document.getElementById(data[j]));
+            }
         } else {
             //without sub_tree
             var sub_ul = createNODE('ul', '', []);
-            sub_ul.appendChild(document.getElementById(data));
+
+            for(var j=0,len=data.length;j<len;++j){
+                sub_ul.appendChild(document.getElementById(data[j]));
+            }
+            
             event.target.appendChild(sub_ul);
             var a = createNODE('a', '-', []);
             Collapse(a);
@@ -207,19 +226,19 @@
         }
     }
 
-    function treeIter(list,tree){
-        list=list.concat(tree.id+',');
-        var ul=tree.getElementsByTagName('ul')[0];
-        if(ul){
-            var li=ul.getElementsByTagName('li');
-            for(var j=0,max=li.length;j<max;++j){
-                list=treeIter(list,li[j]);
+    function treeIter(list, tree) {
+        list = list.concat(tree.id + ',');
+        var ul = tree.getElementsByTagName('ul')[0];
+        if (ul) {
+            var li = ul.getElementsByTagName('li');
+            for (var j = 0, max = li.length; j < max; ++j) {
+                list = treeIter(list, li[j]);
             }
         }
         return list;
     }
     function dragTree(event) {
-        var node_list=treeIter('',event.target);
+        var node_list = treeIter('', event.target);
         event.dataTransfer.setData('text', node_list);
     }
     function dragoverList(event) {
@@ -230,8 +249,8 @@
         //data: [tree_0,li_1,tree_1,tree_2]
         var data = event.dataTransfer.getData('text').split(',');
         data.pop();
-       
-        console.log(data+' '+data.length);
+
+        console.log(data + ' ' + data.length);
         for (var j = 0, max = data.length; j < max; ++j) {
             var node = document.getElementById(data[j]);
             var li = createNODE('li', '', [{
@@ -243,34 +262,43 @@
                 value: 'dragList(event)'
             },
             {
+                attr: 'onclick',
+                value: 'selectList(this)'
+            },
+            {
+                attr: 'selected',
+                value: 'false'
+            },
+            {
                 attr: 'id',
-                value: 'li_'+data[j]
+                value: 'li_' + data[j]
             }]);
 
-            
+
             var i = createNODE('i', '', [{
                 attr: 'ico',
                 value: node.getElementsByTagName('i')[0].getAttribute('ico')
             }])
             var txt;
-            for(var iter=0,len=node.childNodes.length;iter<len;++iter){
-                if(node.childNodes[iter].nodeType===3)//通过nodeType是不是文本节点来判断
-                    txt=node.childNodes[iter].nodeValue;
+            for (var iter = 0, len = node.childNodes.length; iter < len; ++iter) {
+                if (node.childNodes[iter].nodeType === 3)//通过nodeType是不是文本节点来判断
+                    txt = node.childNodes[iter].nodeValue;
             }
             // 天坑 node list 和 html collection的区别
             var text = createNODE('text', txt, []);
             li.appendChild(i);
             li.appendChild(text);
 
-            event.target.appendChild(li);
+            //not user event.target, prevent append inside li
+            document.getElementsByClassName('list scrollY box')[0].appendChild(li);
         }
 
         //remove origin html
-        var parent=document.getElementById(data[0]).parentElement;
-        console.log(parent);
-        console.log(parent.parentElement);
+        var parent = document.getElementById(data[0]).parentElement;
+        // console.log(parent);
+        // console.log(parent.parentElement);
         document.getElementById(data[0]).remove();
-        if(parent.innerHTML===''){
+        if (parent.innerHTML === '') {
             parent.parentElement.getElementsByTagName('a')[0].remove();
         }
     }
@@ -281,18 +309,27 @@
         var list = document.getElementsByClassName('list');
         list[0].innerHTML = "";
         for (var iter = 0; iter < data.list.length; ++iter) {
-            var li = createNODE('li', '', [{
-                attr: 'draggable',
-                value: 'true'
-            },
-            {
-                attr: 'ondragstart',
-                value: 'dragList(event)'
-            },
-            {
-                attr: 'id',
-                value: 'li_' + iter
-            }]);
+            var li = createNODE('li', '', [
+                {
+                    attr: 'draggable',
+                    value: 'true'
+                },
+                {
+                    attr: 'ondragstart',
+                    value: 'dragList(event)'
+                },
+                {
+                    attr: 'onclick',
+                    value: 'selectList(this)'
+                },
+                {
+                    attr: 'selected',
+                    value: 'false'
+                },
+                {
+                    attr: 'id',
+                    value: 'li_' + iter
+                }]);
             var text = createNODE('text', data.list[iter].N, []);
             var i = createNODE('i', '', [{ attr: 'ico', value: data.list[iter].type.toString() }]);
 
@@ -320,26 +357,27 @@
         ]
         */
 
-        var li = createNODE('li', '', [{
-            attr: 'draggable',
-            value: `${iter != 0}`
-        },
-        {
-            attr: 'ondragstart',
-            value: 'dragTree(event)'
-        },
-        {
-            attr: 'id',
-            value: 'tree_' + iter
-        },
-        {
-            attr: 'ondrop',
-            value: 'dropTree(event)'
-        },
-        {
-            attr: 'ondragover',
-            value: 'dragoverTree(event)'
-        }]);
+        var li = createNODE('li', '', [
+            {
+                attr: 'draggable',
+                value: `${iter != 0}`
+            },
+            {
+                attr: 'ondragstart',
+                value: 'dragTree(event)'
+            },
+            {
+                attr: 'id',
+                value: 'tree_' + iter
+            },
+            {
+                attr: 'ondrop',
+                value: 'dropTree(event)'
+            },
+            {
+                attr: 'ondragover',
+                value: 'dragoverTree(event)'
+            }]);
         if (C.length > 0) {
             var a = createNODE('a', '-', []);
             Collapse(a);
@@ -383,6 +421,18 @@
                 temp.setAttribute('style', 'display:auto');
             }
         })
+    }
+
+    function selectList(el) {
+        if (el.getAttribute('selected') === 'true') {
+            //console.log('true');
+            el.setAttribute('selected', 'false');
+            el.style = 'none';
+        } else {
+            el.setAttribute('selected', 'true');
+            el.style.color = 'blue';
+        }
+
     }
 
     function createNODE(type, text, attrs) {
