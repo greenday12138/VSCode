@@ -558,16 +558,23 @@
 
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                console.log(JSON.parse(xmlhttp.responseText));
+                var res=JSON.parse(xmlhttp.responseText);
+                if(res.no===200){
+                    alert(res.msg);
+                }else{
+                    alert(res.msg);
+                }
             }
         }
 
         xmlhttp.open('post', 'http://ext.gaomuxuexi.com:5870/task/nodesCommit', true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-        xmlhttp.send({
-            list:JSON.stringify(list_data),
-            tree:JSON.stringify(tree_data)
-        });
+        xmlhttp.send(
+            JSON.stringify({
+                list: JSON.stringify(list_data),
+                tree: JSON.stringify(tree_data)
+            })
+        );
     }
 
     function request() {
