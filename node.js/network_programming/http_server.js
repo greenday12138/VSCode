@@ -16,7 +16,8 @@ server.on('request',function(req,res){
         let httpVersion=req.httpVersion;
 
         var filePath='.'+url.parse(req.url).pathname;
-        if(filePath==='./'){
+        console.log(filePath);
+        if(filePath==='./path'){
             filePath='./client.js';
         }
         fs.exists(filePath,function(exists){
