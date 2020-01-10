@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Vue 实例</title>
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="book in books">{{book.name}}</li>
+        </ul>
+        <div>
+            <input type="text" v-model="name" placeholder="Your Name">
+            <h1>Hello, {{name}}</h1>
+        </div>
+        <div>
+            {{date|formatDate(true,true)}}
+            {{isOK?'True':'False'}}
+            {{text.split(',').reverse().join(',')}}
+        </div>
+        <span v-html="link"></span>
+        <span v-pre>{{Not compiled}}</span>
+        <p v-if="show">Display this text</p>
+        <a v-bind:href="url">Link</a>
+        <img v-bind:src="imgUrl">
+        <button v-on:click="handleToggle">Click To Toggle</button>
+        <button v-on:click="show=false">Click To Hide</button>
+        <!-- Syntactic Sugar for v-bind-->
+        <button :href="url">Github</button>
+        <!-- Syntactic Sugar for v-on -->
+        <button @click="handleToggle">Click To Toggle</button>
+        <p>{{reversedText}}</p>
+        <p>Name:{{fullName}}</p>
+        <p>{{now}}</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        //supply 0 to month,date,hours below 10
+        var padDate=function(value){
+            return value<10?'0'+value:value;
+        }
+
+        var app=new Vue({
+            el:'#app',
+            // el:document.getElementById('app'),
+            data:{
+                url:'https://www.github.com',
+                imgUrl:'../img/Trump.jpg',
+                show:true,
+                books:[
+                    {name:'Vue'},
+                    {name:'JavaScript'},
+                    {name:'Python'}
+                ],
+                name:'',
+                date:new Date(),
+                link:'<a href="https://www.baidu.com">This is a link. </a>',
+                isOK:false,
+                text:'123,456',
+                firstName:'Jack',
+                lastName:'Green'
+            },
+            computed:{
+                reversedText:function(){
+                    return this.text.split(',').reverse().join(':');
+                },
+                fullName:{
+                    get:function(){
+                        return this.firstName+' '+this.lastName;
+                    },
+                    set:function(newValue){
+                        var name=newValue.split(' ');
+                        this.firstName=name[0];
+                        this.lastName=name[name.length-1];
+                    }
+                },
+                now:function(){
+                    return Date.now();
+                }
+            },
+            filters:{
+                formatDate:function(value,displayYear,displayTime){
+                    var date=new Date(value);
+                    var year=date.getFullYear();
+                    var month=padDate(date.getMonth()+1);
+                    var day=padDate(date.getDate());
+                    var hours=padDate(date.getHours());
+                    var minutes=padDate(date.getMinutes());
+                    var seconds=padDate(date.getSeconds());
+
+                    var re='';
+                    if(displayYear){
+                        re+= year+'-'+month+'-'+day;
+                    }
+                    if(displayTime){
+                        re+=' '+hours+':'+minutes+':'+seconds;
+                    }
+                    return re;
+                }
+            },
+            methods:{
+                handleToggle:function(){
+                    if(this.show){
+                        this.close();
+                    }else{
+                        this.open();
+                    }
+                },
+                close:function(){
+                    this.show=false;
+                },
+                open:function(){
+                    this.show=true;
+                },
+                init:function(text){
+                    console.log(text);
+                }
+            },
+            created:function(){
+                this.init('Call on creating');
+            },
+            mounted:function(){
+                console.log("App mounted!");
+                var _this=this;
+                this.timer=setInterval(function(){
+                    _this.date=new Date();
+                },2000)
+            },
+            beforeDestroy:function(){
+                if(this.timer){
+                    clearInterval(this.timer);
+                }
+                console.log("App is about to be destroyed!")
+            }
+        })
+        app.init('Call from outside');
+    </script>
+</body>
+</html>
