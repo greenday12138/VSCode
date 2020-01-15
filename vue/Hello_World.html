@@ -1,28 +1,35 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <title>Vue 实例</title>
+    <style>
+        #app[v-cloak]{
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" v-cloak>
+        <!-- static property, reder only oncemq -->
+        <span v-once> {{message}}</span>
         <ul>
             <li v-for="book in books">{{book.name}}</li>
         </ul>
-        <div>
+        <div class="static" :class="{'active':isActive,'error':isError}">
             <input type="text" v-model="name" placeholder="Your Name">
             <h1>Hello, {{name}}</h1>
         </div>
-        <div>
+        <div :class="classes">
             {{date|formatDate(true,true)}}
             {{isOK?'True':'False'}}
             {{text.split(',').reverse().join(',')}}
         </div>
-        <span v-html="link"></span>
+        <span :class="multipleClasses" v-html="link"></span>
         <span v-pre>{{Not compiled}}</span>
-        <p v-if="show">Display this text</p>
+        <p v-if="show" :style="styles">Display this text</p>
         <a v-bind:href="url">Link</a>
         <img v-bind:src="imgUrl">
         <button v-on:click="handleToggle">Click To Toggle</button>
@@ -34,6 +41,23 @@
         <p>{{reversedText}}</p>
         <p>Name:{{fullName}}</p>
         <p>{{now}}</p>
+        <!-- conditional render instructions with v-if-->
+        <p v-if="status===1">When status == 1, display this line</p>
+        <p v-else-if="status===2">When status == 2, display this line</p>
+        <p v-else>Other values, display this line</p>
+        <div>
+            <template v-if="type==='name'">
+                <label>Username:</label>
+                <input placeholder="Please input username">
+            </template>
+            <template v-else>
+                <label>Email:</label>
+                <input placeholder="Please input email address">
+            </template>
+            <button @click="handleToggleClick">Change input type</button>
+        </div>
+        <!-- conditional render instructions with v-show -->
+        <p v-show="status=== 1">When status eaquals 1, display this line.</p>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
@@ -46,6 +70,7 @@
             el:'#app',
             // el:document.getElementById('app'),
             data:{
+                message:'Loading Page ...',
                 url:'https://www.github.com',
                 imgUrl:'../img/Trump.jpg',
                 show:true,
@@ -58,9 +83,20 @@
                 date:new Date(),
                 link:'<a href="https://www.baidu.com">This is a link. </a>',
                 isOK:false,
+                isActive:true,
+                isError:false,
+                error:null,
                 text:'123,456',
                 firstName:'Jack',
-                lastName:'Green'
+                lastName:'Green',
+                size:'large',
+                disabled:true,
+                styles:{
+                    color:'red',
+                    fontSize:14+'px'
+                },
+                status:1,
+                type:name
             },
             computed:{
                 reversedText:function(){
@@ -78,6 +114,21 @@
                 },
                 now:function(){
                     return Date.now();
+                },
+                classes:function(){
+                    return {
+                        active:this.isActive && !this.error,
+                        textFail:this.error && this.error.type=== 'fail'
+                    };
+                },
+                multipleClasses:function(){
+                    return [
+                        'btn',
+                        {
+                            ['btn-'+this.size]:this.size!='',
+                            ['btn-disabled']:this.disabled
+                        }
+                    ]
                 }
             },
             filters:{
@@ -116,6 +167,9 @@
                 },
                 init:function(text){
                     console.log(text);
+                },
+                handleToggleClick:function(){
+                    this.type= this.type==='name'?'email':'name';
                 }
             },
             created:function(){
