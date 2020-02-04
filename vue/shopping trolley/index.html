@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Shopping Trolley</title>
+    <style>
+        [v-cloak] {
+            display: none
+        }
+
+        table {
+            border: 2px solid #e9e9ea;
+            border-collapse: collapse;
+            border-spacing: 0;
+            empty-cells: show;
+        }
+
+        th,
+        td {
+            padding: 4px 16px;
+            border: 1px solid #5c5555;
+            text-align: left;
+        }
+
+        th {
+            background: #f7f7f7;
+            color: #5c6b77;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <template v-if="list.length">
+            <table>
+                <thead>
+                    <tr>
+                        <th rowspan="2"></th>
+                        <th rowspan="2">Item Type</th>
+                        <th colspan="6" style="text-align:center">
+                            Item
+                    <tr>
+                        <th></th>
+                        <th>Item Name</th>
+                        <th>Item Price(Per)</th>
+                        <th>Item Number</th>
+                        <th>Operation</th>
+                        <th>
+                            <input type="checkbox" value="all" @click="chooseAll">Choice
+                        </th>
+                    </tr>
+                    </th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <template v-for="(itemtype,index) in list">
+                        <!-- <td>{{index+1}}</td>
+                        <td >{{itemtype.type}}</td> -->
+
+                        <tr v-for="(item,iter) in itemtype.items">
+                            <td>{{index+1}}</td>
+                            <td >{{itemtype.type}}</td>
+                            <td>{{iter+1}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.price}}</td>
+                            <td>
+                                <button @click="handleReduce(index,iter)" :disabled="item.count===1">-</button>
+                                {{item.count}}
+                                <button @click="handleIncrease(index,iter)">+</button>
+                            </td>
+                            <td>
+                                <button @click="handleRemove(index,iter)">Remove</button>
+                            </td>
+                            <td>
+                                <input type="checkbox" :value="loc(index,iter)" @click="handleChoose(this,index,iter)">Select 
+                            </td>
+                        </tr>
+                    </template>
+
+
+                </tbody>
+            </table>
+            <div>TotalPrice:￥{{TotalPrice}}</div>
+        </template>
+        <div v-else>The Shopping Trolley is empty!</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                list: [
+                    {
+                        typeNO: 1,
+                        type: "Eletronic Devices",
+                        items: [
+                            {
+                                id: 1,
+                                name: "iphone 7",
+                                price: 6188,
+                                count: 1
+                            },
+                            {
+                                id: 2,
+                                name: "iPad Pro",
+                                price: 5888,
+                                count: 1
+                            },
+                            {
+                                id: 3,
+                                name: "Macbook Pro",
+                                price: 21488,
+                                count: 1
+                            }
+                        ]
+                    },
+                    {
+                        typeNO: 2,
+                        type: "Househould Items",
+                        items: [
+                            {
+                                id: 4,
+                                name: "Mirror",
+                                price: 20,
+                                count: 1
+                            },
+                            {
+                                id: 5,
+                                name: "Bottle",
+                                price: 5,
+                                count: 2
+                            }
+                        ]
+                    },
+                    {
+                        typeNO: 3,
+                        type: "Vegetables",
+                        items: [
+                            {
+                                id: 6,
+                                name: "Banana",
+                                price: 10,
+                                count: 1
+                            },
+                            {
+                                id: 7,
+                                name: "Cabbage",
+                                price: 15,
+                                count: 10
+                            }
+                        ]
+                    }
+                ],
+                chooseList:[]
+            },
+            computed: {
+                TotalPrice: function () {
+                    var total = 0;
+                    for (var i = 0, len = this.chooseList.length; i < len; ++i) {
+                        for(var j=0,le=this.chooseList[i].items.length;j<le;++j){
+                            total += this.chooseList[i].items[j].price * this.chooseList[i].items[j].count;
+                        }
+                    }
+                    //用正则表达式添加千位分隔符
+                    return total.toString().replace(/(?=(\B\d{3})+$)/g, ',')
+                }
+            },
+            methods: {
+                handleReduce: function (index,iter) {
+                    if (this.list[index].items[iter].count === 1) return;
+                    else {
+                        this.list[index].items[iter].count--;
+                    }
+                },
+                handleIncrease: function (index,iter) {
+                    app.list[index].items[iter].count++;
+                },
+                handleRemove: function (index,iter) {
+                    this.list[index].items.splice(iter, 1);
+                },
+                rows: function (index) {
+                    return this.list[index].items.length;
+                },
+                loc:function(index,iter){
+                    return index.toString()+'_'+iter.toString();
+                },
+                handleChoose:function(el,index,iter){
+                    console.log(el.checked)
+                    if(el.checked===true){
+                        chooseList.push(list[index].items[iter]);
+                       
+                    }else{
+                      
+                    }
+                },
+                chooseAll:function(){
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

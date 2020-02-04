@@ -16,7 +16,11 @@
         <!-- static property, reder only oncemq -->
         <span v-once> {{message}}</span>
         <ul>
-            <li v-for="book in books">{{book.name}}</li>
+            <li v-for="(book,index) in books">{{index}}-{{book.name}}</li>
+            <li v-for="(value,key,index) in user">{{index}}-{{key}}:{{value}}</li>
+            <span v-for="n in 10">{{n}} </span>
+            <br>
+            <li v-for="book in sortedBooks">{{book.name}}</li>
         </ul>
         <div class="static" :class="{'active':isActive,'error':isError}">
             <input type="text" v-model="name" placeholder="Your Name">
@@ -58,6 +62,22 @@
         </div>
         <!-- conditional render instructions with v-show -->
         <p v-show="status=== 1">When status eaquals 1, display this line.</p>
+        <!-- 阻止单击事件冒泡 -->
+        <a @click.stop="handle"></a>
+        <!-- 提交事件不用重载页面 -->
+        <form @submit.prevent="handle"></form>
+        <!-- 修饰符可以串联 -->
+        <a @submit.stop.prevent="handle"></a>
+        <!-- 只有修饰符 -->
+        <form @submit.prevent></form>
+        <!-- 添加事件侦听器时使用事件捕获方式 -->
+        <div @click.capture="handle"></div>
+        <!-- 只当事件在该元素本身（而不是子元素）触发时触发回调 -->
+        <div @click.self="handle">...</div>
+        <!-- 只触发一次，组件同样适用 -->
+        <div @click.once="handle">...</div>
+        <!-- 只有在keyCode是13时调用vm.submit -->
+        <div @keyup.13="submit">3er</div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
@@ -79,6 +99,11 @@
                     {name:'JavaScript'},
                     {name:'Python'}
                 ],
+                user:{
+                    name:'Aresn',
+                    gender:'male',
+                    age:26
+                },
                 name:'',
                 date:new Date(),
                 link:'<a href="https://www.baidu.com">This is a link. </a>',
@@ -129,6 +154,11 @@
                             ['btn-disabled']:this.disabled
                         }
                     ]
+                },
+                sortedBooks:function(){
+                    return this.books.sort(function(a,b){
+                        return b.name.length-a.name.length;
+                    });
                 }
             },
             filters:{
@@ -190,6 +220,17 @@
             }
         })
         app.init('Call from outside');
+        // app.books=app.books.filter(function (item){
+        //     return item.name.match(/JavaScript/);
+        // })
+        Vue.set(app.books,3,{
+            name:'CSS secrets',
+            author:'Lea Verou'
+        })
+        app.books.splice(3,1,{
+            name:'CSS Secrets',
+            author:'Lea Verow'
+        })
     </script>
 </body>
 </html>
